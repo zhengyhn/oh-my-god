@@ -1,0 +1,15 @@
+.el-tabs .el-tabs__item {
+  font-size: 0.75rem;
+}
+
+.el-row {
+  margin-bottom: 10px;
+}
+
+.display-linebreak {
+  white-space: pre-line;
+}
+
+.reply-content img {
+  /* width: 100%; */
+}

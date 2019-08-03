@@ -1,10 +1,10 @@
 import * as Router from 'koa-router'
 import { globalResponse } from './middleware'
-import { CrawlerRouter } from './crawler'
+import { StuffRouter } from './stuff'
 
 const router = new Router()
 
 router.use(globalResponse())
-new CrawlerRouter().routes(router)
+new StuffRouter().routes(router)
 
 export default router

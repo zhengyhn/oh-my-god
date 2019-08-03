@@ -5,23 +5,35 @@
   "main": "index.js",
   "dependencies": {
     "@types/node": "^12.0.10",
+    "bluebird": "^3.5.5",
+    "config": "^3.2.0",
+    "ioredis": "^4.11.1",
+    "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.14",
     "puppeteer-core": "^1.18.1",
+    "superagent": "^5.1.0",
     "tracer": "^0.9.8",
     "typescript-ioc": "^1.2.5"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
-    "tslint-config-standard": "^8.0.1",
-    "typescript": "^3.5.2"
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.3"
   },
   "scripts": {
-    "dev": "nodemon --watch 'src/' --exec './node_modules/.bin/ts-node' ./src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec './node_modules/.bin/ts-node' ./src/index.ts",
+    "test": "jest",
+    "watch": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "author": "hank <yuanhang.zheng@qq.com> (http://zhengyhn.github.io)",
   "license": "ISC"

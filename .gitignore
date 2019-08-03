@@ -77,3 +77,4 @@ build/
 *.egg-info/
 resource/
 *.png
+generator/output/

@@ -1,1 +1,0 @@
-const url = 'https://pic4.zhimg.com/50/v2-5d05b6dc2a075a3740520d5a2aad07d7_hd.jpg'

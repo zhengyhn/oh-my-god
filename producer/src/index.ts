@@ -10,6 +10,6 @@ app.use(koaJson())
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-const port = 3000
-logger.info('Server started, listening at 3000')
+const port = 9280
+logger.info('Server started, listening at 9280')
 app.listen(port)
