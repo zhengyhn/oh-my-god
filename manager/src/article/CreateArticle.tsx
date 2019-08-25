@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { Button, Layout, Form, Input, Checkbox } from "element-react";
 import { ReplyItem } from "./types";
 import ReplyDetail from "../reply/ReplyDetail";
-import './index.css'
+import "./index.css";
 
 type PropsType = {
   actions: {
@@ -37,8 +37,8 @@ const CreateArticle = (props: PropsType) => {
   };
   const [form, setForm] = useState(initForm);
   const [currentPage, setCurrentPage] = useState(1);
+  const [allChecked, setAllChecked] = useState(false);
 
-  console.log(currentPage);
   useEffect(() => {
     if (currentPage > 0) {
       actions.getSelectedReplies({ currentPage });
@@ -91,6 +91,19 @@ const CreateArticle = (props: PropsType) => {
           </Form>
         </Layout.Col>
         <Layout.Col span="13">
+          <Layout.Row>
+            <Checkbox
+              checked={allChecked}
+              onChange={checked => {
+                list.map(item => {
+                  item.checked = checked;
+                  actions.refreshContent({ item, checked });
+                });
+                setAllChecked(checked);
+              }}
+            />
+            <span>全选</span>
+          </Layout.Row>
           <Layout.Row>
             {list.map(item => {
               return (

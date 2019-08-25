@@ -1,26 +1,27 @@
-import { Singleton } from 'typescript-ioc'
-import * as puppeteer from 'puppeteer-core'
-import { logger } from './'
+import { Singleton } from "typescript-ioc";
+import * as puppeteer from "puppeteer-core";
+import { logger } from "./";
 
 @Singleton
 export class Puppeteer {
-  browser
+  browser;
 
-  async launch () {
+  async launch() {
     if (!this.browser) {
       this.browser = await puppeteer.launch({
-        executablePath: '/usr/local/Caskroom/google-chrome/latest/Google Chrome.app/Contents/MacOS/Google Chrome',
+        executablePath:
+          "/usr/local/Caskroom/google-chrome/latest/Google Chrome.app/Contents/MacOS/Google Chrome",
         headless: true,
         devtools: false
-      })
+      });
     }
   }
 
-  async close () {
+  async close() {
     if (this.browser) {
-      this.browser.close()
-      this.browser = null
-      logger.info('Puppeteer closed')
+      this.browser.close();
+      this.browser = null;
+      logger.info("Puppeteer closed");
     }
   }
 }

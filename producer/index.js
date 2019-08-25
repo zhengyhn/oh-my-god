@@ -105,8 +105,8 @@ function generateTextWithHtml(text, html) {
 }
 
 function htmlToText(html) {
-    let text = html.replace(/<p>/g, "\n");
-    return text.replace(/<[^>]*>/g, "");
+  let text = html.replace(/<p>/g, "\n");
+  return text.replace(/<[^>]*>/g, "");
 }
 
 function generateTextWithHtml2(text, html) {
@@ -135,6 +135,13 @@ function generateTextWithHtml2(text, html) {
   return result;
 }
 
+function isQuestionLink(link) {
+  return link.indexOf("zhihu.com") >= 0 && link.indexOf("/question") >= 0;
+}
+
+function isCollectionLink(link) {
+  return link.indexOf("zhihu.com") >= 0 && link.indexOf("/collection/") >= 0;
+}
 (async () => {
   const browser = await puppeteer.launch({
     executablePath:
@@ -143,11 +150,17 @@ function generateTextWithHtml2(text, html) {
     devtools: true
   });
   const page = await browser.newPage();
-  await page.goto("https://www.zhihu.com/question/337210934/answer/765926715");
+  const link = "https://www.zhihu.com/collection/36809906";
+  await page.goto(link);
 
-  const text = await page.$eval(".RichContent-inner", item => item.innerText);
-  const html = await page.$eval(".RichContent-inner", item => item.innerHTML);
-  const result = generateTextWithHtml2(text, html);
-  console.log(result);
+  let newLinks = await page.$$eval("a", anchors =>
+    anchors.map(item => item.href)
+  );
+  newLinks = newLinks.filter(
+    item =>
+      (isQuestionLink(item) || isCollectionLink(item)) && !item.includes(link)
+  );
+
+  console.log(newLinks);
   await browser.close();
 })();

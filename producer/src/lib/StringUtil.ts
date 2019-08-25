@@ -8,7 +8,8 @@ export class StringUtil {
   }
 
   htmlToText(html): string {
-    let text = html.replace(/<p>/g, "\n");
+    let text = html.replace(/<br>/g, "\n");
+    text = text.replace(/<p>/g, "\n");
     return text.replace(/<[^>]*>/g, "");
   }
 }

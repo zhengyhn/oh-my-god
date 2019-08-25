@@ -22,6 +22,7 @@ public class GetBase64ServiceImpl implements IGetBase64Service {
     public String getBase64ByUrl(String imageUrl) {
         String encodedString = "";
         try {
+            log.info(imageUrl);
             URL url = new URL(imageUrl);
             InputStream is = url.openStream();
             byte[] bytes = IOUtils.toByteArray(is);

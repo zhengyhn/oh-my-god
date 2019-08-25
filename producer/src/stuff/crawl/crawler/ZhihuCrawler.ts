@@ -8,9 +8,9 @@ import { CrawlerType } from "./CrawlerType";
 export class ZhihuCrawler extends AbstractCrawler {
   @Inject
   private stringUtil: StringUtil;
-  private MAX_LENGTH = 1000;
-  private MIN_RATE = 0.5;
-  private MIN_UPS = 100;
+  private MAX_LENGTH = 300;
+  private MIN_RATE = 2;
+  private MIN_UPS = 500;
 
   /**
    * @override
@@ -22,7 +22,9 @@ export class ZhihuCrawler extends AbstractCrawler {
       anchors.map(item => item.href)
     );
     newLinks = newLinks.filter(
-      item => this.isQuestionLink(item) && item !== link
+      item =>
+        (this.isQuestionLink(item) || this.isCollectionLink(item)) &&
+        !item.includes(link)
     );
     // logger.info(newLinks)
     const title = await page.$eval(
@@ -40,33 +42,39 @@ export class ZhihuCrawler extends AbstractCrawler {
     const author = await page.$eval(".AuthorInfo-name", item => item.innerText);
     let upStr = await page.$eval(".VoteButton", item => item.innerText);
     const up = this.parseUp(upStr);
+    let items = [];
     if (
-      up < this.MIN_UPS ||
-      replyText.length > this.MAX_LENGTH ||
-      up / replyText.length < this.MIN_RATE
+      up >= this.MIN_UPS &&
+      replyText.length <= this.MAX_LENGTH &&
+      up / replyText.length >= this.MIN_RATE
     ) {
-      return { newLinks, items: [] };
-    }
-    const reply = this.generateTextWithHtml(replyHtml);
-    logger.info(link, title, upStr, upStr.substr(3), up, replyText.length);
+      const reply = this.generateTextWithHtml(replyHtml);
+      logger.info(link, title, upStr, upStr.substr(3), up, replyText.length);
 
-    const item: IReplyItem = {
-      platform: Symbol.keyFor(CrawlerType.ZHIHU).toUpperCase(),
-      url: link,
-      title,
-      reply,
-      author,
-      up
-    };
+      const item: IReplyItem = {
+        platform: Symbol.keyFor(CrawlerType.ZHIHU).toUpperCase(),
+        url: link,
+        title,
+        reply,
+        author,
+        up
+      };
+      items = [item];
+    }
     await page.close();
-    return { newLinks, items: [item] };
+    return { newLinks, items };
   }
 
   /**
    * @override
    */
   getStartPointLinks(): string[] {
-    return ["https://www.zhihu.com/explore", "https://www.zhihu.com/hot"];
+    return [
+      "https://www.zhihu.com/collection/30386924",
+      "https://www.zhihu.com/collection/42655683",
+      "https://www.zhihu.com/collection/175577689",
+      "https://www.zhihu.com/collection/36809906"
+    ];
   }
 
   /**
@@ -75,7 +83,7 @@ export class ZhihuCrawler extends AbstractCrawler {
   async getReplyLinks(link: string): Promise<string[]> {
     const page = await this.puppeteer.browser.newPage();
     await page.goto(link);
-    let links = await page.$$eval("a.question_link", anchors =>
+    let links = await page.$$eval("a", anchors =>
       anchors.map(link => link.href)
     );
     let metaLinks = await page.$$eval("meta", anchors =>
@@ -106,6 +114,9 @@ export class ZhihuCrawler extends AbstractCrawler {
     return link.indexOf("zhihu.com") >= 0 && link.indexOf("/question") >= 0;
   }
 
+  private isCollectionLink(link: string): boolean {
+    return link.indexOf("zhihu.com") >= 0 && link.indexOf("/collection/") >= 0;
+  }
   private isTargetLink(link: string): boolean {
     return this.isQuestionLink(link) && link.indexOf("/answer") >= 0;
   }

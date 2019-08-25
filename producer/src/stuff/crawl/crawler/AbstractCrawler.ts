@@ -28,6 +28,7 @@ export abstract class AbstractCrawler {
       }
       let links = [];
       try {
+        logger.info(questionLink);
         links = await this.getReplyLinks(questionLink);
       } catch (err) {
         logger.error(err);
@@ -43,7 +44,8 @@ export abstract class AbstractCrawler {
         }
         let result: IFetchReplyResult;
         try {
-          await bluebird.delay(1000);
+          // await bluebird.delay(500);
+          logger.info(link);
           result = await this.fetchContent(link);
         } catch (err) {
           logger.error(err);
