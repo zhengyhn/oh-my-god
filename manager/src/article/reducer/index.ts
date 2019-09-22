@@ -1,18 +1,51 @@
 import { combineReducers } from "redux";
-import { IState } from "../types";
+import {
+  ICreateArticleState,
+  IListArticleState,
+  IGetArticleDetailState
+} from "../types";
 import { IAction } from "../../lib/types";
 import { ReducerFactory } from "./ReducerFactory";
 
-const initialState: IState = {
+const initialCreateArticleState: ICreateArticleState = {
   list: [],
   content: "",
   selectedReplyIds: []
 };
 
-function createReducer(state = initialState, action: IAction) {
-  return new ReducerFactory().getReducer(action.type).reduce(state, action);
+function createReducer(state = initialCreateArticleState, action: IAction) {
+  return new ReducerFactory()
+    .getCreateReducer(action.type)
+    .reduce(state, action);
+}
+
+const initialListArticleState: IListArticleState = {
+  list: [],
+  total: 0
+};
+
+function listReducer(state = initialListArticleState, action: IAction) {
+  return new ReducerFactory().getListReducer(action.type).reduce(state, action);
+}
+
+const initialGetArticleDetailState: IGetArticleDetailState = {
+  article: {
+    id: "",
+    title: "",
+    description: "",
+    date: "",
+    replies: []
+  }
+};
+
+function detailReducer(state = initialGetArticleDetailState, action: IAction) {
+  return new ReducerFactory()
+    .getDetailReducer(action.type)
+    .reduce(state, action);
 }
 
 export default combineReducers({
-  create: createReducer
+  create: createReducer,
+  list: listReducer,
+  detail: detailReducer
 });

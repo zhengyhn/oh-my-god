@@ -1,3 +1,17 @@
 .create-article .reply-content img {
   width: 100%;
 }
+
+#article-detail .reply-title {
+  font-size: 1.2em;
+}
+
+#article-detail .reply-content {
+  font-size: 1em;
+}
+.display-linebreak {
+  white-space: pre-line;
+}
+.reply-content img {
+  max-width: 100%;
+}

@@ -1,8 +1,7 @@
 import { AbstractReducer } from "./AbstractReducer";
-import { IState } from "../types";
 
 export class GetSelectedRepliesSuccessReducer extends AbstractReducer {
-  getNewState(state: IState, data: any): IState {
+  getNewState(state: any, data: any): any {
     let list;
     if (data.currentPage === 1) {
       list = data.list;

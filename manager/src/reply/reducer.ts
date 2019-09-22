@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action: IAction) {
-  console.log(action);
   let newState;
   switch (action.type) {
     case ActionType[ActionType.REPLY_LIST_SUCCESS]:

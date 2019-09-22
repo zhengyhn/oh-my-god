@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Reply {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "platform")
@@ -45,4 +45,7 @@ public class Reply {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+//    @ManyToMany(mappedBy = "replies")
+//    private List<Article> articles;
 }

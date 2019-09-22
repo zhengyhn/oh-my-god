@@ -49,7 +49,7 @@ public class AddArticleServiceImpl implements IAddArticleService {
                     .build();
         }).collect(Collectors.toList());
 
-        generatorApi.generateArticle(GenerateRequest.builder().items(items).build());
+//        generatorApi.generateArticle(GenerateRequest.builder().items(items).build());
 
         return new EmptyDto();
     }

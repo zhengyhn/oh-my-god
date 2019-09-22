@@ -12,4 +12,17 @@ export class StringUtil {
     text = text.replace(/<p>/g, "\n");
     return text.replace(/<[^>]*>/g, "");
   }
+
+  countSubstr(str: string, subStr: string): number {
+    let count = 0;
+    if (!str || !subStr) {
+      return count;
+    }
+    let i = str.indexOf(subStr);
+    while (i >= 0) {
+      ++count;
+      i = str.indexOf(subStr, i + 1);
+    }
+    return count;
+  }
 }

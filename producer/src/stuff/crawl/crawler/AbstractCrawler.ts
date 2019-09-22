@@ -13,7 +13,7 @@ export abstract class AbstractCrawler {
   @Inject
   private mediatorApi: MediatorApi;
   private linkRedisPrefix = "producer:stuff:crawler";
-  private linkRedisTtlSeconds = 60 * 60;
+  private linkRedisTtlSeconds = 60 * 30;
 
   async crawl() {
     await this.puppeteer.launch();

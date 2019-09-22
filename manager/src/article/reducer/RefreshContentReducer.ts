@@ -1,9 +1,8 @@
 import { AbstractReducer } from "./AbstractReducer";
-import { IState } from "../types";
 import { remove } from "lodash";
 
 export class RefreshContentReducer extends AbstractReducer {
-  getNewState(state: IState, data: any): IState {
+  getNewState(state: any, data: any): any {
     let newState = state;
     const text = `<h3>${data.item.title}</h3>${data.item.reply}`;
     const item: any = newState.list.find(

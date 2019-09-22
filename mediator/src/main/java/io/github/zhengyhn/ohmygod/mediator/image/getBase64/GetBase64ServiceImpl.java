@@ -20,6 +20,9 @@ public class GetBase64ServiceImpl implements IGetBase64Service {
 
     @Override
     public String getBase64ByUrl(String imageUrl) {
+        if (imageUrl.contains("<svg")) {
+            return "";
+        }
         String encodedString = "";
         try {
             log.info(imageUrl);

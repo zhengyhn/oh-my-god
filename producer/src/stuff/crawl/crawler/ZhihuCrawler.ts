@@ -4,19 +4,27 @@ import { IReplyItem } from "../../../mediator/";
 import { StringUtil, logger } from "../../../lib";
 import { Inject } from "typescript-ioc";
 import { CrawlerType } from "./CrawlerType";
+import * as lodash from "lodash";
 
 export class ZhihuCrawler extends AbstractCrawler {
   @Inject
   private stringUtil: StringUtil;
-  private MAX_LENGTH = 300;
-  private MIN_RATE = 2;
-  private MIN_UPS = 500;
+  private MAX_LENGTH = 200;
+  private MIN_RATE = 3;
+  private MIN_UPS = 1000;
 
   /**
    * @override
    */
   async fetchContent(link: string): Promise<IFetchReplyResult> {
-    const page = await this.puppeteer.browser.newPage();
+    const pages = await this.puppeteer.browser.pages();
+    let page;
+    if (pages.length > 0) {
+      page = pages[0];
+    } else {
+      console.log("new:")
+      page = await this.puppeteer.browser.newPage();
+    }
     await page.goto(link);
     let newLinks = await page.$$eval("a", anchors =>
       anchors.map(item => item.href)
@@ -42,15 +50,17 @@ export class ZhihuCrawler extends AbstractCrawler {
     const author = await page.$eval(".AuthorInfo-name", item => item.innerText);
     let upStr = await page.$eval(".VoteButton", item => item.innerText);
     const up = this.parseUp(upStr);
+    const reply = this.generateTextWithHtml(replyHtml);
+    const wordNum =
+      replyText.length + this.stringUtil.countSubstr(reply, "image[") * 10;
+    logger.info(link, title, upStr, upStr.substr(3), up, wordNum);
     let items = [];
     if (
       up >= this.MIN_UPS &&
-      replyText.length <= this.MAX_LENGTH &&
-      up / replyText.length >= this.MIN_RATE
+      wordNum <= this.MAX_LENGTH &&
+      up / wordNum >= this.MIN_RATE &&
+      !title.includes("视频")
     ) {
-      const reply = this.generateTextWithHtml(replyHtml);
-      logger.info(link, title, upStr, upStr.substr(3), up, replyText.length);
-
       const item: IReplyItem = {
         platform: Symbol.keyFor(CrawlerType.ZHIHU).toUpperCase(),
         url: link,
@@ -61,7 +71,7 @@ export class ZhihuCrawler extends AbstractCrawler {
       };
       items = [item];
     }
-    await page.close();
+    // await page.close();
     return { newLinks, items };
   }
 

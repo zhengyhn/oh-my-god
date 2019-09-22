@@ -1,11 +1,13 @@
 package io.github.zhengyhn.ohmygod.mediator.article.entity;
 
+import io.github.zhengyhn.ohmygod.mediator.reply.entity.Reply;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -33,4 +35,12 @@ public class Article {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "article_reply",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "reply_id")
+    )
+    private List<Reply> replies;
 }

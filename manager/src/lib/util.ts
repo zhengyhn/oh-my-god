@@ -13,5 +13,8 @@ export default {
   },
   removeEmptyEntry(param: any): any {
     return lodash.pickBy(param, lodash.identity);
+  },
+  lineBreakToBr(str: string): string {
+    return str.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 };

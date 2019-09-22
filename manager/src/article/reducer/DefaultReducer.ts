@@ -1,8 +1,7 @@
 import { AbstractReducer } from "./AbstractReducer";
-import { IState } from "../types";
 
 export class DefaultReducer extends AbstractReducer {
-  getNewState(state: IState, data: any): IState {
+  getNewState(state: any, data: any): any {
     return state;
   }
 }
