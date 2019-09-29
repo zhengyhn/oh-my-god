@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ZhihuFilter implements IPlatformFilter {
+public class UrlUniqueFilter implements IPlatformFilter {
     @Autowired
     ReplyRepository replyRepository;
 

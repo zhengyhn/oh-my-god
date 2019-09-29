@@ -1,5 +1,5 @@
 import { Inject } from "typescript-ioc";
-import { RedisUtil, Puppeteer, logger } from "../../../lib";
+import { StringUtil, RedisUtil, Puppeteer, logger } from "../../../lib";
 import { IFetchReplyResult } from "./IFetchReplyResult";
 import * as bluebird from "bluebird";
 import * as lodash from "lodash";
@@ -10,6 +10,8 @@ export abstract class AbstractCrawler {
   protected puppeteer: Puppeteer;
   @Inject
   private redisUtil: RedisUtil;
+  @Inject
+  protected stringUtil: StringUtil;
   @Inject
   private mediatorApi: MediatorApi;
   private linkRedisPrefix = "producer:stuff:crawler";
@@ -75,6 +77,45 @@ export abstract class AbstractCrawler {
     await this.puppeteer.close();
   }
 
+  protected async getPageInstance() {
+    const pages = await this.puppeteer.browser.pages();
+    let page;
+    if (pages.length > 0) {
+      page = pages[0];
+    } else {
+      page = await this.puppeteer.browser.newPage();
+    }
+    return page;
+  }
+  protected generateTextWithHtml(html: string): string {
+    let set = new Set();
+    let result = "";
+    let j = 0;
+    for (let i = 0; i < html.length; ++i) {
+      if (html.substring(i, i + 10) === '<img src="') {
+        const end = html.indexOf('"', i + 10);
+        const url = html.substring(i + 10, end);
+        const fileName = url.substring(url.lastIndexOf("/") + 1);
+        if (!set.has(fileName)) {
+          result +=
+            this.stringUtil.htmlToText(html.substring(j, i)) +
+            "image[" +
+            url +
+            "]";
+          set.add(fileName);
+        }
+        i = html.indexOf(">", end);
+        j = i + 1;
+      } else {
+        i = html.indexOf('<img src="', i + 1) - 1;
+      }
+      if (i < 0) {
+        break;
+      }
+    }
+    result += this.stringUtil.htmlToText(html.substring(j));
+    return result;
+  }
   abstract getStartPointLinks(): string[];
   abstract getReplyLinks(link: string): Promise<string[]>;
   abstract fetchContent(link: string): Promise<IFetchReplyResult>;

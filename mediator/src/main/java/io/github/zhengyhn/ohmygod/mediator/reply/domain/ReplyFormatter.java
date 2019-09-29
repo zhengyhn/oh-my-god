@@ -17,10 +17,12 @@ public class ReplyFormatter {
             int end = replyBuilder.indexOf("]", start + IMAGE_PREFIX.length());
             String url = replyBuilder.substring(start + IMAGE_PREFIX.length(), end);
             String base64 = getBase64Service.getBase64ByUrl(url);
+            String imgStr = "";
+            if (!base64.isEmpty()) {
+                imgStr = "\n<image src='data:image/png;base64, " + base64 + "'></image>";
+            }
             replyBuilder = new StringBuilder(replyBuilder.substring(0, start))
-                    .append("\n<image src='data:image/png;base64, ")
-                    .append(base64)
-                    .append("'></image>")
+                    .append(imgStr)
                     .append(replyBuilder.substring(end + 1));
         }
         return replyBuilder.toString();

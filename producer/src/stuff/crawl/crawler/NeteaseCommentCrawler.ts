@@ -6,8 +6,6 @@ import { Inject } from "typescript-ioc";
 import { CrawlerType } from "./CrawlerType";
 
 export class NeteaseCommentCrawler extends AbstractCrawler {
-  @Inject
-  private stringUtil: StringUtil;
   private MIN_UPS = 10000;
   /**
    * @override

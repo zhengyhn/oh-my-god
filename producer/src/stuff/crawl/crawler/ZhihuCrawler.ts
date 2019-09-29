@@ -4,11 +4,8 @@ import { IReplyItem } from "../../../mediator/";
 import { StringUtil, logger } from "../../../lib";
 import { Inject } from "typescript-ioc";
 import { CrawlerType } from "./CrawlerType";
-import * as lodash from "lodash";
 
 export class ZhihuCrawler extends AbstractCrawler {
-  @Inject
-  private stringUtil: StringUtil;
   private MAX_LENGTH = 200;
   private MIN_RATE = 3;
   private MIN_UPS = 1000;
@@ -17,14 +14,7 @@ export class ZhihuCrawler extends AbstractCrawler {
    * @override
    */
   async fetchContent(link: string): Promise<IFetchReplyResult> {
-    const pages = await this.puppeteer.browser.pages();
-    let page;
-    if (pages.length > 0) {
-      page = pages[0];
-    } else {
-      console.log("new:")
-      page = await this.puppeteer.browser.newPage();
-    }
+    let page = await this.getPageInstance();
     await page.goto(link);
     let newLinks = await page.$$eval("a", anchors =>
       anchors.map(item => item.href)
@@ -91,7 +81,7 @@ export class ZhihuCrawler extends AbstractCrawler {
    * @override
    */
   async getReplyLinks(link: string): Promise<string[]> {
-    const page = await this.puppeteer.browser.newPage();
+    let page = await this.getPageInstance();
     await page.goto(link);
     let links = await page.$$eval("a", anchors =>
       anchors.map(link => link.href)
@@ -102,7 +92,7 @@ export class ZhihuCrawler extends AbstractCrawler {
     links = [...links, ...metaLinks];
     links = links.filter(item => this.isTargetLink(item));
 
-    await page.close();
+    // await page.close();
     return links;
   }
 
@@ -129,35 +119,5 @@ export class ZhihuCrawler extends AbstractCrawler {
   }
   private isTargetLink(link: string): boolean {
     return this.isQuestionLink(link) && link.indexOf("/answer") >= 0;
-  }
-
-  private generateTextWithHtml(html): string {
-    let set = new Set();
-    let result = "";
-    let j = 0;
-    for (let i = 0; i < html.length; ++i) {
-      if (html.substring(i, i + 10) === '<img src="') {
-        const end = html.indexOf('"', i + 10);
-        const url = html.substring(i + 10, end);
-        const fileName = url.substring(url.lastIndexOf("/") + 1);
-        if (!set.has(fileName)) {
-          result +=
-            this.stringUtil.htmlToText(html.substring(j, i)) +
-            "image[" +
-            url +
-            "]";
-          set.add(fileName);
-        }
-        i = html.indexOf(">", end);
-        j = i + 1;
-      } else {
-        i = html.indexOf('<img src="', i + 1) - 1;
-      }
-      if (i < 0) {
-        break;
-      }
-    }
-    result += this.stringUtil.htmlToText(html.substring(j));
-    return result;
   }
 }

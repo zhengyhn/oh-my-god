@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pagination, Table, Button, Layout, Select } from "element-react";
+import { Pagination, Table, Button, Layout } from "element-react";
 import actions from "./actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -103,10 +103,7 @@ const ReplyList = (props: PropsType) => {
               type="success"
               size="small"
               onClick={() => {
-                actions.transform({
-                  id: data.id,
-                  status: ReplyStatus[ReplyStatus.SELECTED]
-                });
+                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTED])
               }}
             >
               好
@@ -115,10 +112,7 @@ const ReplyList = (props: PropsType) => {
               type="danger"
               size="small"
               onClick={() => {
-                actions.transform({
-                  id: data.id,
-                  status: ReplyStatus[ReplyStatus.DROPED]
-                });
+                handleOperation(data.id, ReplyStatus[ReplyStatus.DROPED])
               }}
             >
               不好
@@ -127,10 +121,7 @@ const ReplyList = (props: PropsType) => {
               type="info"
               size="small"
               onClick={() => {
-                actions.transform({
-                  id: data.id,
-                  status: ReplyStatus[ReplyStatus.SELECTING]
-                });
+                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTING])
               }}
             >
               待挑选
@@ -144,6 +135,14 @@ const ReplyList = (props: PropsType) => {
   useEffect(() => {
     actions.replyList({ currentPage, currentPageSize, query });
   }, []);
+  const handleOperation = (id: number, status: string) => {
+    actions.transform({
+      id,
+      status 
+    });
+    // actions.replyList({ currentPage, currentPageSize, query });
+  };
+
   return (
     <div>
       <Layout.Row gutter="10">
@@ -180,7 +179,15 @@ const ReplyList = (props: PropsType) => {
         </Layout.Col>
       </Layout.Row>
       <Layout.Row>
-        <Table style={{ width: "100%" }} columns={columns} data={list} />
+        {list.length > 0 && (
+          <Table
+            style={{ width: "100%" }}
+            columns={columns}
+            data={list}
+            border={false}
+            defaultExpandAll={true}
+          />
+        )}
       </Layout.Row>
       <Layout.Row>
         <Pagination

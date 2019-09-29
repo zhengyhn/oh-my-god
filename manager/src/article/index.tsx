@@ -32,7 +32,11 @@ const ArticleHome = (props: PropsType) => {
           </div>
         )}
       />
-      <Route exact path={`${match.path}/create`} component={CreateArticle} />
+      <Route
+        exact
+        path={`${match.path}/create`}
+        render={({ history }) => <CreateArticle history={history}/>}
+      />
       <Route
         exact
         path={match.path}

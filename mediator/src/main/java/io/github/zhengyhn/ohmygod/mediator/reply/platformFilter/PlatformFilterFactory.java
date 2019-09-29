@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlatformFilterFactory {
     @Autowired
-    private ZhihuFilter zhihuFilter;
+    private UrlUniqueFilter urlUniqueFilter;
 
     @Autowired
     private NeteaseCommentFilter neteaseCommentFilter;
@@ -15,11 +15,13 @@ public class PlatformFilterFactory {
     public IPlatformFilter getPlatformFilter(PlatformType platformType) {
         switch (platformType) {
             case ZHIHU:
-                return zhihuFilter;
+            case BUDEJIE:
+            case PENGFU:
+                return urlUniqueFilter;
             case NETEASE_COMMENT:
                 return neteaseCommentFilter;
             default:
-                return zhihuFilter;
+                return urlUniqueFilter;
         }
     }
 }

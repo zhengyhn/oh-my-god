@@ -8,6 +8,7 @@ import ReplyDetail from "../reply/ReplyDetail";
 import "./index.css";
 
 type PropsType = {
+  history: any;
   actions: {
     getSelectedReplies: any;
     refreshContent: any;
@@ -30,7 +31,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 const CreateArticle = (props: PropsType) => {
-  const { actions, list, content, selectedReplyIds } = props;
+  const { history, actions, list, content, selectedReplyIds } = props;
   const initForm: { title: string; description: string } = {
     title: "",
     description: ""
@@ -68,9 +69,6 @@ const CreateArticle = (props: PropsType) => {
                 }}
               ></Input>
             </Form.Item>
-            <Form.Item label="">
-              <ReplyDetail reply={content} />
-            </Form.Item>
             <Form.Item>
               <Button
                 type="primary"
@@ -82,11 +80,17 @@ const CreateArticle = (props: PropsType) => {
                     description: form.description,
                     replyIds: selectedReplyIds
                   });
+                  setTimeout(() => {
+                    history.push("/article/list");
+                  }, 3000);
                 }}
               >
                 立即创建
               </Button>
               <Button type="warning">取消</Button>
+            </Form.Item>
+            <Form.Item label="">
+              <ReplyDetail reply={content} />
             </Form.Item>
           </Form>
         </Layout.Col>

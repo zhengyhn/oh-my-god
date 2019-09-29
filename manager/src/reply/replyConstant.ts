@@ -22,11 +22,15 @@ export default {
   platformOptions: [
     {
       value: PlatformType[PlatformType.NETEASE_COMMENT],
-      label: '网易跟贴'
+      label: "网易跟贴"
     },
     {
       value: PlatformType[PlatformType.ZHIHU],
-      label: '知乎'
+      label: "知乎"
+    },
+    {
+      value: PlatformType[PlatformType.BUDEJIE],
+      label: "百思不得解"
     }
   ]
 };
