@@ -25,5 +25,6 @@ export enum ReplyStatus {
 export enum PlatformType {
   ZHIHU,
   NETEASE_COMMENT,
-  BUDEJIE
+  BUDEJIE,
+  TIEBA
 }

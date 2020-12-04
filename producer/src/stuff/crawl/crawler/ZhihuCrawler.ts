@@ -6,8 +6,8 @@ import { Inject } from "typescript-ioc";
 import { CrawlerType } from "./CrawlerType";
 
 export class ZhihuCrawler extends AbstractCrawler {
-  private MAX_LENGTH = 200;
-  private MIN_RATE = 3;
+  private MAX_LENGTH = 500;
+  private MIN_RATE = 2;
   private MIN_UPS = 1000;
 
   /**
@@ -73,7 +73,9 @@ export class ZhihuCrawler extends AbstractCrawler {
       "https://www.zhihu.com/collection/30386924",
       "https://www.zhihu.com/collection/42655683",
       "https://www.zhihu.com/collection/175577689",
-      "https://www.zhihu.com/collection/36809906"
+      "https://www.zhihu.com/collection/36809906",
+      "https://www.zhihu.com/",
+      "https://www.zhihu.com/question/321199799/answer/769297581"
     ];
   }
 

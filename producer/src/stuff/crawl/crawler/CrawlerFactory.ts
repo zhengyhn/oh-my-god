@@ -1,5 +1,6 @@
 import { Singleton, Inject } from "typescript-ioc";
 import { ZhihuCrawler } from "./ZhihuCrawler";
+import { TiebaCrawler } from "./TiebaCrawler";
 import { NeteaseCommentCrawler } from "./NeteaseCommentCrawler";
 import { AbstractCrawler } from "./AbstractCrawler";
 import { CrawlerType } from "./CrawlerType";
@@ -12,6 +13,8 @@ export class CrawlerFactory {
   @Inject
   private zhihuCrawler: ZhihuCrawler;
   @Inject
+  private tiebaCrawler: TiebaCrawler;
+  @Inject
   private neteaseCommentCrawler: NeteaseCommentCrawler;
   @Inject
   private budiejieCrawler: BudiejieCrawler;
@@ -22,6 +25,8 @@ export class CrawlerFactory {
     switch (type) {
       case CrawlerType.ZHIHU:
         return this.zhihuCrawler;
+      case CrawlerType.TIEBA:
+        return this.tiebaCrawler;
       case CrawlerType.NETEASE_COMMENT:
         return this.neteaseCommentCrawler;
       case CrawlerType.BUDEJIE:

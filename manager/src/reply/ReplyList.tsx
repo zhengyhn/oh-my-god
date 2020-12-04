@@ -103,7 +103,7 @@ const ReplyList = (props: PropsType) => {
               type="success"
               size="small"
               onClick={() => {
-                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTED])
+                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTED]);
               }}
             >
               好
@@ -112,7 +112,7 @@ const ReplyList = (props: PropsType) => {
               type="danger"
               size="small"
               onClick={() => {
-                handleOperation(data.id, ReplyStatus[ReplyStatus.DROPED])
+                handleOperation(data.id, ReplyStatus[ReplyStatus.DROPED]);
               }}
             >
               不好
@@ -121,7 +121,7 @@ const ReplyList = (props: PropsType) => {
               type="info"
               size="small"
               onClick={() => {
-                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTING])
+                handleOperation(data.id, ReplyStatus[ReplyStatus.SELECTING]);
               }}
             >
               待挑选
@@ -138,7 +138,7 @@ const ReplyList = (props: PropsType) => {
   const handleOperation = (id: number, status: string) => {
     actions.transform({
       id,
-      status 
+      status
     });
     // actions.replyList({ currentPage, currentPageSize, query });
   };
@@ -180,13 +180,7 @@ const ReplyList = (props: PropsType) => {
       </Layout.Row>
       <Layout.Row>
         {list.length > 0 && (
-          <Table
-            style={{ width: "100%" }}
-            columns={columns}
-            data={list}
-            border={false}
-            defaultExpandAll={true}
-          />
+          <Table style={{ width: "100%" }} columns={columns} data={list} />
         )}
       </Layout.Row>
       <Layout.Row>

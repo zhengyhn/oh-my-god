@@ -15,6 +15,7 @@ public class PlatformFilterFactory {
     public IPlatformFilter getPlatformFilter(PlatformType platformType) {
         switch (platformType) {
             case ZHIHU:
+            case TIEBA:
             case BUDEJIE:
             case PENGFU:
                 return urlUniqueFilter;

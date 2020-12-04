@@ -11,7 +11,7 @@ type PropsType = {
 export const CommonSelect = (props: PropsType) => {
   const { placeholder, value, onChange, options } = props;
   return (
-    <Select value={value} placeholder={placeholder} onChange={onChange}>
+    <Select value={value} clearable={true} placeholder={placeholder} onChange={onChange}>
       {options.map(option => {
         return (
           <Select.Option

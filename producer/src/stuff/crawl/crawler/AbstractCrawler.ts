@@ -46,7 +46,7 @@ export abstract class AbstractCrawler {
         }
         let result: IFetchReplyResult;
         try {
-          // await bluebird.delay(500);
+          await bluebird.delay(500);
           logger.info(link);
           result = await this.fetchContent(link);
         } catch (err) {
@@ -72,7 +72,7 @@ export abstract class AbstractCrawler {
           this.linkRedisTtlSeconds
         );
       }
-      await bluebird.delay(500);
+      await bluebird.delay(1000);
     }
     await this.puppeteer.close();
   }

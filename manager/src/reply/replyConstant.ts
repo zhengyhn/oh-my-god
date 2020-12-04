@@ -29,6 +29,10 @@ export default {
       label: "知乎"
     },
     {
+      value: PlatformType[PlatformType.TIEBA],
+      label: "贴吧"
+    },
+    {
       value: PlatformType[PlatformType.BUDEJIE],
       label: "百思不得解"
     }
